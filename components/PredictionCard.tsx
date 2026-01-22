@@ -28,7 +28,8 @@ const PredictionBadge: React.FC<{ prediction: PredictionOutcome }> = ({ predicti
 };
 
 const PredictionCard: React.FC<PredictionCardProps> = ({ match }) => {
-  const { homeTeam, awayTeam, league, country, countryCode, matchDate, prediction } = match;
+  const { homeTeam, awayTeam, league, country, countryCode, prediction } = match;
+  const matchDate = new Date(match.matchDate);
 
   const formattedDate = new Intl.DateTimeFormat('en-US', {
     weekday: 'short',

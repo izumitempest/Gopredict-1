@@ -24,32 +24,35 @@ const allPremierLeagueTeams: Team[] = [
     { name: 'Wolverhampton Wanderers', logoUrl: 'https://picsum.photos/seed/wolves/40/40' },
 ];
 
-export const fetchAllTeams = (): Promise<Team[]> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(allPremierLeagueTeams);
-        }, 200); // Fast resolution
-    });
+const API_URL = 'http://localhost:8000';
+
+export const fetchAllTeams = async (): Promise<Team[]> => {
+    try {
+        const response = await fetch(`${API_URL}/teams`);
+        if (!response.ok) throw new Error('Failed to fetch teams');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching teams:', error);
+        return [];
+    }
 };
 
-export const getPredictionForMatch = (homeTeam: Team, awayTeam: Team): Promise<Match> => {
-    return new Promise((resolve) => {
-        // Simulate network delay
-        setTimeout(() => {
-            const outcomes = [PredictionOutcome.HOME, PredictionOutcome.AWAY, PredictionOutcome.DRAW];
-            const randomPrediction = outcomes[Math.floor(Math.random() * outcomes.length)];
-
-            const match: Match = {
-                id: `${homeTeam.name}-${awayTeam.name}-${Date.now()}`,
-                homeTeam,
-                awayTeam,
-                league: 'Premier League',
-                country: 'England',
-                countryCode: 'gb-eng',
-                matchDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Simulate a future match date
-                prediction: randomPrediction,
-            };
-            resolve(match);
-        }, 1500);
-    });
+export const getPredictionForMatch = async (homeTeam: Team, awayTeam: Team): Promise<Match> => {
+    try {
+        const response = await fetch(`${API_URL}/predict`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                home_team: homeTeam.name,
+                away_team: awayTeam.name,
+            }),
+        });
+        if (!response.ok) throw new Error('Failed to fetch prediction');
+        return await response.json();
+    } catch (error) {
+        console.error('Error getting prediction:', error);
+        throw error;
+    }
 };
