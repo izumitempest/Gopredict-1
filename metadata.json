@@ -1,0 +1,5 @@
+{
+  "name": "GoPredict Frontend",
+  "description": "A clean, single-page web application to display sports match predictions (Home, Draw, Away). Designed to be easily connected to a backend API.",
+  "requestFramePermissions": []
+}
