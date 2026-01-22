@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 
 import { Match, PredictionOutcome, Team } from '../types';
 
@@ -24,7 +25,7 @@ const allPremierLeagueTeams: Team[] = [
     { name: 'Wolverhampton Wanderers', logoUrl: 'https://picsum.photos/seed/wolves/40/40' },
 ];
 
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const fetchAllTeams = async (): Promise<Team[]> => {
     try {
